@@ -45,4 +45,8 @@ class User extends Authenticatable
     protected $fillabel = [
         'username', 'email', 'password', 'phone',
     ];
+    // protected $with = [
+    //     'permissions',
+    //     'roles'
+    // ];
 }

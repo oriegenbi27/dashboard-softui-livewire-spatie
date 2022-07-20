@@ -82,6 +82,12 @@
                                             aria-describedby="basic-addon1">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button class="btn btn-primary" wire:click.prevent="store()">Save</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -123,6 +129,7 @@
                                     $no = 1;
                                 @endphp
                                 @foreach ($user as $row)
+                                    {{-- {{ dd($row->roles[0]->name) }} --}}
                                     <tr>
                                         <td class="ps-4">
                                             <p class="text-xs font-weight-bold mb-0">{{ $no++ }}</p>
@@ -133,16 +140,17 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Admin</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $row->name }}</p>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">admin@softui.com</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $row->email }}</p>
                                         </td>
                                         <td class="text-center">
-                                            <p class="text-xs font-weight-bold mb-0">Admin</p>
+                                            <p class="text-xs font-weight-bold mb-0">{{ $row->roles[0]->name }}</p>
                                         </td>
                                         <td class="text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">16/06/18</span>
+                                            <span
+                                                class="text-secondary text-xs font-weight-bold">{{ date('d-m-Y H:i:s', strtotime($row->created_at)) }}</span>
                                         </td>
                                         <td class="text-center">
                                             <a href="#" class="mx-3" data-bs-toggle="tooltip"
@@ -181,7 +189,8 @@
                                     @endphp
                                     @for ($i = 1; $i <= $lastPage; $i++)
                                         <li class="page-item {{ url()->full() == $user->url($i) ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $user->url($i) }}">{{ $i }}</a>
+                                            <a class="page-link"
+                                                href="{{ $user->url($i) }}">{{ $i }}</a>
                                         </li>
                                     @endfor
                                     @if ($user->hasMorePages())

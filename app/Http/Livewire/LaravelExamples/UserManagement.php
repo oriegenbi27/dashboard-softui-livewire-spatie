@@ -23,8 +23,17 @@ class UserManagement extends Component
     public function render()
     {
         $this->role   = Role::all();
-        $user   = User::latest()->paginate(2);
+        $user   = User::with(['roles'])->latest()->paginate(10);
         return view('livewire.laravel-examples.user-management', compact('user'));
+    }
+
+    public function resetInputFields()
+    {
+        $this->role = '';
+        $this->username = '';
+        $this->email    = '';
+        $this->password = '';
+        $this->phone    = '';
     }
 
     public function store(Request $request)
@@ -39,12 +48,15 @@ class UserManagement extends Component
         ]);
 
         $create     = new User();
-        $create->name   = $this->username;
+        $create->name       = $this->username;
         $create->email      = $this->email;
         $create->phone      = $this->phone;
         $create->password   = Hash::make($this->password);
         $create->save();
         $create->assignRole($this->role);
+        session()->flash('message', 'Post Created Successfully.');
+
+        $this->resetInputFields();
     }
 
     public function mount()
